@@ -1,0 +1,25 @@
+.advocatesSection {
+  padding: 0 80px 48px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.resultsCount {
+  margin-bottom: 24px;
+}
+
+.resultsText {
+  font-size: 14px;
+  color: #717171;
+}
+
+.resultsHighlight {
+  font-weight: 600;
+  color: #222;
+}
+
+.advocatesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
