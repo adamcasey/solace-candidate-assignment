@@ -1,6 +1,34 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SearchBar from "./_components/SearchBar";
+import SpecialtyCategories from "./_components/SpecialtyCategories";
+import AdvocatesGrid from "./_components/AdvocatesGrid";
+import styles from "./page.module.css";
+
+type Advocate = {
+  id?: string | number;
+  firstName: string;
+  lastName: string;
+  city: string;
+  degree: string;
+  specialties: string[];
+  yearsOfExperience: string | number;
+  phoneNumber: string;
+};
+
+const SPECIALTY_CATEGORIES = [
+  { name: "Anxiety", icon: "🧘" },
+  { name: "Depression", icon: "🌧️" },
+  { name: "ADHD", icon: "⚡" },
+  { name: "Eating disorders", icon: "🍽️" },
+  { name: "Chronic pain", icon: "💊" },
+  { name: "Women's issues", icon: "👶" },
+  { name: "Pediatrics", icon: "👶" },
+  { name: "Substance", icon: "🚭" },
+  { name: "Sleep", icon: "😴" },
+  { name: "Coaching", icon: "🎯" },
+];
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
