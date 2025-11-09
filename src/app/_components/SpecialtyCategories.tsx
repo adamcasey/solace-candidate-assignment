@@ -1,12 +1,8 @@
+import { SpecialtyCategory } from "@/types/specialty";
 import styles from "./SpecialtyCategories.module.css";
 
-type SpecialtyCategory = {
-  name: string;
-  icon: string;
-};
-
 type SpecialtyCategoriesProps = {
-  categories: SpecialtyCategory[];
+  categories: readonly SpecialtyCategory[];
   selectedSpecialty: string | null;
   onSpecialtyClick: (specialty: string) => void;
 };

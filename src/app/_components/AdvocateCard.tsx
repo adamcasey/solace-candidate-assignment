@@ -1,15 +1,5 @@
+import { Advocate } from "@/types/advocate";
 import styles from "./AdvocateCard.module.css";
-
-type Advocate = {
-  id?: string | number;
-  firstName: string;
-  lastName: string;
-  city: string;
-  degree: string;
-  specialties: string[];
-  yearsOfExperience: string | number;
-  phoneNumber: string;
-};
 
 type AdvocateCardProps = {
   advocate: Advocate;

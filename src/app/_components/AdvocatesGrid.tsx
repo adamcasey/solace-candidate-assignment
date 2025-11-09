@@ -1,17 +1,7 @@
+import { Advocate } from "@/types/advocate";
 import AdvocateCard from "./AdvocateCard";
 import EmptyState from "./EmptyState";
 import styles from "./AdvocatesGrid.module.css";
-
-type Advocate = {
-  id?: string | number;
-  firstName: string;
-  lastName: string;
-  city: string;
-  degree: string;
-  specialties: string[];
-  yearsOfExperience: string | number;
-  phoneNumber: string;
-};
 
 type AdvocatesGridProps = {
   advocates: Advocate[];

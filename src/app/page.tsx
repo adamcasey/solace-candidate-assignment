@@ -4,31 +4,9 @@ import { useEffect, useState } from "react";
 import SearchBar from "./_components/SearchBar";
 import SpecialtyCategories from "./_components/SpecialtyCategories";
 import AdvocatesGrid from "./_components/AdvocatesGrid";
+import { SPECIALTY_CATEGORIES } from "@/types/specialty";
+import { Advocate } from "@/types/advocate";
 import styles from "./page.module.css";
-
-type Advocate = {
-  id?: string | number;
-  firstName: string;
-  lastName: string;
-  city: string;
-  degree: string;
-  specialties: string[];
-  yearsOfExperience: string | number;
-  phoneNumber: string;
-};
-
-const SPECIALTY_CATEGORIES = [
-  { name: "Anxiety", icon: "🧘" },
-  { name: "Depression", icon: "🌧️" },
-  { name: "ADHD", icon: "⚡" },
-  { name: "Eating disorders", icon: "🍽️" },
-  { name: "Chronic pain", icon: "💊" },
-  { name: "Women's issues", icon: "👶" },
-  { name: "Pediatrics", icon: "👶" },
-  { name: "Substance", icon: "🚭" },
-  { name: "Sleep", icon: "😴" },
-  { name: "Coaching", icon: "🎯" },
-];
 
 export default function Home() {
   const [advocates, setAdvocates] = useState<Advocate[]>([]);
@@ -80,50 +58,35 @@ export default function Home() {
   };
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <br />
-      <br />
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term"></span>
-        </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
-      </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </main>
+    <div className={styles.container}>
+      {/* Header */}
+      <header className={styles.header}>
+        <h1 className={styles.headerTitle}>Solace Advocates</h1>
+      </header>
+
+      {/* Search Section */}
+      <section className={styles.searchSection}>
+        <h2 className={styles.pageTitle}>Find your advocate</h2>
+
+        <SearchBar
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          onClear={clearFilters}
+          showClear={!!(searchTerm || selectedSpecialty)}
+        />
+
+        <SpecialtyCategories
+          categories={SPECIALTY_CATEGORIES}
+          selectedSpecialty={selectedSpecialty}
+          onSpecialtyClick={handleSpecialtyClick}
+        />
+      </section>
+
+      <AdvocatesGrid
+        advocates={advocates}
+        searchTerm={searchTerm}
+        selectedSpecialty={selectedSpecialty}
+      />
+    </div>
   );
 }
