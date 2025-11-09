@@ -3,42 +3,52 @@
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [advocates, setAdvocates] = useState<Advocate[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
-    console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
-        setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
-      });
-    });
-  }, []);
+    const fetchAdvocates = async () => {
+      const query = selectedSpecialty || searchTerm;
+      const url =
+        query.trim() === ""
+          ? "/api/advocates"
+          : `/api/advocates?q=${encodeURIComponent(query)}`;
 
-  const onChange = (e) => {
-    const searchTerm = e.target.value;
+      const response = await fetch(url);
+      const jsonResponse = await response.json();
 
-    document.getElementById("search-term").innerHTML = searchTerm;
+      if (jsonResponse.count !== undefined) {
+        console.log(
+          `Found ${jsonResponse.count} advocates matching "${jsonResponse.query}"`
+        );
+      }
 
-    console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
-      );
-    });
+      setAdvocates(jsonResponse.data);
+    };
 
-    setFilteredAdvocates(filteredAdvocates);
+    const timeoutId = setTimeout(() => {
+      fetchAdvocates();
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, selectedSpecialty]);
+
+  const handleSpecialtyClick = (specialty: string) => {
+    setSelectedSpecialty(specialty);
+    setSearchTerm("");
   };
 
-  const onClick = () => {
-    console.log(advocates);
-    setFilteredAdvocates(advocates);
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setSelectedSpecialty(null);
+  };
+
+  const clearFilters = () => {
+    setSelectedSpecialty(null);
+    setSearchTerm("");
   };
 
   return (
