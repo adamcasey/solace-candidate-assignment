@@ -1,91 +1,90 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import SearchBar from "./_components/SearchBar";
+import SpecialtyCategories from "./_components/SpecialtyCategories";
+import AdvocatesGrid from "./_components/AdvocatesGrid";
+import { SPECIALTY_CATEGORIES } from "@/types/specialty";
+import { Advocate } from "@/types/advocate";
+import styles from "./page.module.css";
 
 export default function Home() {
-  const [advocates, setAdvocates] = useState([]);
-  const [filteredAdvocates, setFilteredAdvocates] = useState([]);
+  const [advocates, setAdvocates] = useState<Advocate[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
-    console.log("fetching advocates...");
-    fetch("/api/advocates").then((response) => {
-      response.json().then((jsonResponse) => {
+    const fetchAdvocates = async () => {
+      try {
+        const query = selectedSpecialty || searchTerm;
+        const url =
+          query.trim() === ""
+            ? "/api/advocates"
+            : `/api/advocates?q=${encodeURIComponent(query)}`;
+
+        const response = await fetch(url);
+        const jsonResponse = await response.json();
+
         setAdvocates(jsonResponse.data);
-        setFilteredAdvocates(jsonResponse.data);
-      });
-    });
-  }, []);
+      } catch (error) {
+        console.error("Failed to fetch advocates:", error);
+      }
+    };
 
-  const onChange = (e) => {
-    const searchTerm = e.target.value;
+    const timeoutId = setTimeout(() => {
+      fetchAdvocates();
+    }, 300);
 
-    document.getElementById("search-term").innerHTML = searchTerm;
+    return () => clearTimeout(timeoutId);
+  }, [searchTerm, selectedSpecialty]);
 
-    console.log("filtering advocates...");
-    const filteredAdvocates = advocates.filter((advocate) => {
-      return (
-        advocate.firstName.includes(searchTerm) ||
-        advocate.lastName.includes(searchTerm) ||
-        advocate.city.includes(searchTerm) ||
-        advocate.degree.includes(searchTerm) ||
-        advocate.specialties.includes(searchTerm) ||
-        advocate.yearsOfExperience.includes(searchTerm)
-      );
-    });
-
-    setFilteredAdvocates(filteredAdvocates);
+  const handleSpecialtyClick = (specialty: string) => {
+    setSelectedSpecialty(specialty);
+    setSearchTerm("");
   };
 
-  const onClick = () => {
-    console.log(advocates);
-    setFilteredAdvocates(advocates);
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value);
+    setSelectedSpecialty(null);
+  };
+
+  const clearFilters = () => {
+    setSelectedSpecialty(null);
+    setSearchTerm("");
   };
 
   return (
-    <main style={{ margin: "24px" }}>
-      <h1>Solace Advocates</h1>
-      <br />
-      <br />
-      <div>
-        <p>Search</p>
-        <p>
-          Searching for: <span id="search-term"></span>
-        </p>
-        <input style={{ border: "1px solid black" }} onChange={onChange} />
-        <button onClick={onClick}>Reset Search</button>
-      </div>
-      <br />
-      <br />
-      <table>
-        <thead>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>City</th>
-          <th>Degree</th>
-          <th>Specialties</th>
-          <th>Years of Experience</th>
-          <th>Phone Number</th>
-        </thead>
-        <tbody>
-          {filteredAdvocates.map((advocate) => {
-            return (
-              <tr>
-                <td>{advocate.firstName}</td>
-                <td>{advocate.lastName}</td>
-                <td>{advocate.city}</td>
-                <td>{advocate.degree}</td>
-                <td>
-                  {advocate.specialties.map((s) => (
-                    <div>{s}</div>
-                  ))}
-                </td>
-                <td>{advocate.yearsOfExperience}</td>
-                <td>{advocate.phoneNumber}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </main>
+    <div className={styles.container}>
+      {/* Header */}
+      <header className={styles.header}>
+        <h1 className={styles.headerTitle}>Solace Advocates</h1>
+      </header>
+
+      {/* Search Section */}
+      <section className={styles.searchSection}>
+        <h2 className={styles.pageTitle}>Find your advocate</h2>
+
+        <SearchBar
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          onClear={clearFilters}
+          showClear={!!(searchTerm || selectedSpecialty)}
+        />
+
+        <SpecialtyCategories
+          categories={SPECIALTY_CATEGORIES}
+          selectedSpecialty={selectedSpecialty}
+          onSpecialtyClick={handleSpecialtyClick}
+        />
+      </section>
+
+      <AdvocatesGrid
+        advocates={advocates}
+        searchTerm={searchTerm}
+        selectedSpecialty={selectedSpecialty}
+      />
+    </div>
   );
 }

@@ -1,0 +1,46 @@
+.specialtyGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-xl);
+}
+
+.specialtyButton {
+  padding: var(--spacing-lg) var(--spacing-md);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-background);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.specialtyButton:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.specialtyButton.selected {
+  border: 2px solid var(--color-primary);
+  background-color: var(--color-primary-light);
+}
+
+.specialtyButton.selected:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.specialtyIcon {
+  font-size: var(--font-size-2xl);
+}
+
+.specialtyName {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  text-align: center;
+}
