@@ -27,12 +27,6 @@ export default function Home() {
         const response = await fetch(url);
         const jsonResponse = await response.json();
 
-        if (jsonResponse.count !== undefined) {
-          console.log(
-            `Found ${jsonResponse.count} advocates matching "${jsonResponse.query}"`
-          );
-        }
-
         setAdvocates(jsonResponse.data);
       } catch (error) {
         console.error("Failed to fetch advocates:", error);
