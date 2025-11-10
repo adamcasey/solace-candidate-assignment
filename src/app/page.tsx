@@ -17,22 +17,20 @@ export default function Home() {
 
   useEffect(() => {
     const fetchAdvocates = async () => {
-      const query = selectedSpecialty || searchTerm;
-      const url =
-        query.trim() === ""
-          ? "/api/advocates"
-          : `/api/advocates?q=${encodeURIComponent(query)}`;
+      try {
+        const query = selectedSpecialty || searchTerm;
+        const url =
+          query.trim() === ""
+            ? "/api/advocates"
+            : `/api/advocates?q=${encodeURIComponent(query)}`;
 
-      const response = await fetch(url);
-      const jsonResponse = await response.json();
+        const response = await fetch(url);
+        const jsonResponse = await response.json();
 
-      if (jsonResponse.count !== undefined) {
-        console.log(
-          `Found ${jsonResponse.count} advocates matching "${jsonResponse.query}"`
-        );
+        setAdvocates(jsonResponse.data);
+      } catch (error) {
+        console.error("Failed to fetch advocates:", error);
       }
-
-      setAdvocates(jsonResponse.data);
     };
 
     const timeoutId = setTimeout(() => {
