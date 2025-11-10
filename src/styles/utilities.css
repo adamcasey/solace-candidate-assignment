@@ -1,0 +1,83 @@
+/* Common utility classes for shared styles */
+
+/* Card Styles */
+.card {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+.card-hover:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+/* Button Styles */
+.button-base {
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border: 1px solid var(--color-border-medium);
+  background-color: var(--color-background);
+  outline: none;
+}
+
+.button-primary {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+.button-primary:hover {
+  opacity: 0.9;
+}
+
+.button-secondary {
+  background-color: var(--color-background-light);
+  border: 1px solid var(--color-border-medium);
+}
+
+.button-secondary:hover {
+  background-color: var(--color-border-light);
+}
+
+/* Tag Styles */
+.tag {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.tag-primary {
+  background-color: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.tag-secondary {
+  background-color: var(--color-background-light);
+  color: var(--color-text-secondary);
+}
+
+/* Text Styles */
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-brand {
+  color: var(--color-primary);
+}
+
+/* Container Styles */
+.container-max-width {
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.section-padding {
+  padding: 0 var(--spacing-2xl) var(--spacing-xl);
+}

@@ -1,0 +1,32 @@
+.container {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+.header {
+  border-bottom: 1px solid #ebebeb;
+  padding: 16px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: 600;
+  color: #4d65ff;
+  margin: 0;
+}
+
+.searchSection {
+  padding: 48px 80px 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.pageTitle {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #222;
+}

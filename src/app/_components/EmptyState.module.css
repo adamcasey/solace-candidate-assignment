@@ -1,0 +1,14 @@
+.emptyState {
+  text-align: center;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  color: var(--color-text-secondary);
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  margin-bottom: var(--spacing-sm);
+}
+
+.message {
+  font-size: var(--font-size-sm);
+}
